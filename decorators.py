@@ -84,3 +84,78 @@ f_pos(1,2,3)
 def f_key():
     print('The function takes keyword Arguments')
 f_key(f_name='Harry', l_name='Potter', age=11)
+
+
+#use an iterator to print the keys in dictionary
+my_dict = {'name': 'Shridhar', 'age': 21, 'city': 'Mangalore'}
+
+key_iter = iter(my_dict)
+
+print("Keys in dictionary:")
+for key in key_iter:
+    print(key)
+
+#use an iterators to print the value of iterator
+my_dict = {'name': 'Shridhar', 'age': 21, 'city': 'Mangalore'}
+
+value_iter = iter(my_dict.values())
+
+print("Values in dictionary:")
+for value in value_iter:
+    print(value)
+
+#define user def func reverse. that, iterates over the in the reverse orderand prints the output
+def reverse(data):
+    print("Reversed output:")
+    for item in reversed(data):
+        print(item)
+
+reverse([10, 20, 30, 40])
+
+#write a decorator called green that adds hello to the original func that prints the user name
+def green(func):
+    def wrapper(name):
+        print("Hello", end=" ")
+        func(name)
+    return wrapper
+
+@green
+def show_name(name):
+    print(name)
+
+show_name("Shridhar")
+
+#create a decorator that prints func execution started and func execution ended before and after the wrap function executes
+def logger(func):
+    def wrapper(*args, **kwargs):
+        print("Function execution started")
+        result = func(*args, **kwargs)
+        print("Function execution ended")
+        return result
+    return wrapper
+
+@logger
+def greet():
+    print("Welcome to Python programming!")
+
+greet()
+
+#apply a decorator to the recursive func of factorial and prints how manyn time the func was called
+def count_calls(func):
+    count = 0
+    def wrapper(n):
+        nonlocal count
+        count += 1
+        print(f"Function called {count} times")
+        return func(n)
+    return wrapper
+
+@count_calls
+def factorial(n):
+    if n == 0 or n == 1:
+        return 1
+    else:
+        return n * factorial(n - 1)
+
+print("Factorial:", factorial(5))
+
