@@ -44,6 +44,8 @@ for _ in range(5):
 seq=it.cycle(['A','B','C','D','E'])
 for _ in range(5):
     print(next(seq))
+    
+
 
 
 
