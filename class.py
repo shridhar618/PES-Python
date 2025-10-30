@@ -33,3 +33,7 @@ print(l4.brand,l4.model,l4.price)
 l5=Laptop('Asus', 'VivoBook')
 print(l5.brand,l5.model,l5.price)
 
+#Accesisng methods through objects
+print(l1.turn_on())
+l1.specifications()
+print(l1.turn_off())
