@@ -40,3 +40,5 @@ print(l1.turn_off())
 
 l8=Laptop('Dell','Inspiron 17', 89000)
 print(l8.turn_on())
+
+#every mrthod define in the class should take self as a parameter if the object needs to call the method
