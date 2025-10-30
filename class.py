@@ -37,3 +37,6 @@ print(l5.brand,l5.model,l5.price)
 print(l1.turn_on())
 l1.specifications()
 print(l1.turn_off())
+
+l8=Laptop('Dell','Inspiron 17', 89000)
+print(l8.turn_on())
