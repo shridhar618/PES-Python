@@ -30,12 +30,35 @@ class Laptop:
             print('battery level is too low. charge up now!')
         else:
             self.battery_level=usage
-            print(f'battery decreased by {self.usage}% Current lkevel: {self.battery_level}')
+            print(f'battery decreased by {usage}% Current level: {self.battery_level}')
     
             
             
-            
+#Methods of child class            
 class GamingLaptop(Laptop):
     #inherits the attributes from parent class laptop.
-    def __init__(self, brand, model, price):
-        super().__init__(brand, model, price)   
+    def __init__(self, brand, model, price, gpu):
+        super().__init__(brand, model, price)   #this is a call and not a definition
+        self.gpu=gpu
+        
+    def boost_mode(self):
+        print(f'{self.model} of {self.brand} is runing in boost mode')
+        
+    def turn_on(self):
+        print(f'{self.model} of {self.brand} is starting in high performance gaming mode {self.gpu}')
+        
+        
+l1=Laptop('Dell', 'Inspiron 15', 55000)
+gl1=GamingLaptop('Asus', 'ROD strix', 150000, 'NVidia rtx 4070')
+
+l1.turn_on()
+l1.check_battery()
+l1.dec_battery(10)
+l1.check_battery()
+
+gl1.turn_on()
+gl1.turn_off()
+gl1.boost_mode()
+gl1.check_battery()
+gl1.dec_battery(15)
+gl1.check_battery()
