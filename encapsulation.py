@@ -71,8 +71,60 @@ class Employee:
 e1=Employee('XYZ', 'IT', 10000)
 e1.show()
 e1._display()
-e1.__see()
-    
+# e1.__see()
+
+
+#usage of getter and setter method
+class Student:
+    def __init__(self, name, age):
+        self._name = name       # underscore indicates it's for internal use
+        self._age = age
+
+    # Getter for name
+    @property
+    def name(self):
+        return self._name
+
+    # Setter for name
+    @name.setter
+    def name(self, value):
+        if len(value) < 2:
+            raise ValueError("Name must have at least 2 characters")
+        self._name = value
+
+    # Getter for age
+    @property
+    def age(self):
+        return self._age
+
+    # Setter for age
+    @age.setter
+    def age(self, value):
+        if value < 0:
+            raise ValueError("Age cannot be negative")
+        self._age = value
+
+
+# Using the class
+s = Student("Shridhar", 21)
+print(s.name)   # calls getter
+print(s.age)
+
+s.name = "Navonmesh"   # calls setter
+s.age = 22
+
+print(s.name)
+print(s.age)
+
+
+ 
+#define a bank account class with attributes name, acc-no and balance. implement 2 methods deposit and withdraw with validations. keep a minimum balance of 500 rs.
+
+#create a product class with attributes name, price and discount. discount is protected. implement a setter that changes price after applying the discount. only if the discount is less than 25%.
+
+#create a car class with a private attributes key. implement the methods accelerate and brake that adjest the limit within the limit of 0-100 km/h.
+
+#create a user class with protected user name and private password admin inherits thge user and adds a private variable called as access level. implement methods to have restricted password access and restricted modification of access level.
     
 
 
