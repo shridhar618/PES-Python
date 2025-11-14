@@ -40,3 +40,42 @@ class Game:
 
 # Begin the game
 Game().play()
+
+
+#aggregation example
+class Teacher:
+    def __init__(self, name, subject):
+        self.name = name
+        self.subject = subject
+        
+    def teach(self):
+        print(f'{self.name} is teaching {self.subject}')
+        
+class School:
+    def __init__(self, name):
+        self.name = name
+        self.teachers = []  # list to hold teacher objects
+        
+    def add_teacher(self, teacher):
+        self.teachers.append(teacher)
+        
+    def conduct_classes(self):
+        print(f'Classes at {self.name} are being conducted:')
+        for teacher in self.teachers:
+            teacher.teach()
+            
+    def show_teachers(self):
+        print(f'Teachers at {self.name}:')
+        for teacher in self.teachers:
+            print(f'- {teacher.name}, Subject: {teacher.subject}')
+            
+            
+s1=School('ABC school')
+s2=School('PQR High school')
+t1=Teacher('Mr.XYZ', 'maths')
+t1=Teacher('Mr.ABC', 'python')
+t1=Teacher('Ms.LMN', 'CP')
+
+s1.show_teachers()
+s2.show_teachers()
+
