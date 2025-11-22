@@ -52,3 +52,7 @@ print(average_marks)
 
 
 
+
+
+
+
