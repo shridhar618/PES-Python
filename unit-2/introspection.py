@@ -1,3 +1,5 @@
+# In Python, introspection means examining the type or properties of an object at runtime
+
 l=[1,2,3,4]
 s='hello'
 t=(1,2,3)
