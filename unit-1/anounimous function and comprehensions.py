@@ -39,6 +39,8 @@ print(l)
 l=[a*2 for a in range(20) if a%2==0]
 print(l)
 
+l=
+
 
 #-------------------conditional comprehension--------------------
 l=[a*2 if a%2==0 else a+3 for a in range(20)]
