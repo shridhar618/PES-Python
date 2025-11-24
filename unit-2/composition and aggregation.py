@@ -302,6 +302,28 @@ if __name__ == "__main__":
     print("\nSmartphone used by user:", user.smartphone)
     print("Camera:", user.smartphone.camera)
     print("Display:", user.smartphone.display)
+    
+    
+    
+    # A library has books. users use library. a smartphone has a camera and display. user uses a smartphone.
+# ------------------------------------------------
+# USER → LIBRARY (AGGREGATION)
+# USER → SMARTPHONE (AGGREGATION)
+# ------------------------------------------------                                      
+class User:
+    def __init__(self, name):
+        self.name = name
+        self.library = None      # user uses a library (aggregation)
+        self.smartphone = None   # user uses smartphone (aggregation)
+
+    def use_library(self, library):
+        self.library = library
+
+    def use_smartphone(self, phone):
+        self.smartphone = phone
+
+    def __repr__(self):
+        return f"User({self.name})"
 
 
 

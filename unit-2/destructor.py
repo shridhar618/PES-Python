@@ -10,45 +10,45 @@ class Coding:
 Coding()
 Coding().show()
 
-# #parameterized constructor
-# class Addition:
-#     def __init__(self):
-#         self.f=f
-#         self.s=s
-#     def Calculate(self):
-#         self.ans=self.f+self.s
-#     def Display(self):
-#         print(f"The addition of {self.f} and {self.s} results in {self.ans}")
+#parameterized constructor
+class Addition:
+    def __init__(self, f, s):
+        self.f=f
+        self.s=s
+    def Calculate(self):
+        self.ans=self.f+self.s
+    def Display(self):
+        print(f"The addition of {self.f} and {self.s} results in {self.ans}")
 
 
-# a=Addition(10,20)
-# a.Calculate()   
+a=Addition(10,20)
+a.Calculate()   
 
-# a.Display()     
+a.Display()     
 
 
-# class A:
-#     def init(self):
-#         print('the object has been created')
+class A:
+    def init(self):
+        print('the object has been created')
         
-# a=A()
-# print(a)
+a=A()
+print(a)
 
-# del a
-# print(a)
+del a
+print(a)
 
-#destructor
-# class A:
-#     def __init__(self):
-#         print('The object initialized')
+destructor
+class A:
+    def __init__(self):
+        print('The object initialized')
         
-#     def __del__(self):
-#         print('the object is destroyed')
+    def __del__(self):
+        print('the object is destroyed')
         
-# a=A()
-# print(a)
-# a.__del__()
-# print(a)
+a=A()
+print(a)
+a.__del__()
+print(a)
 
 
 #static and class method
@@ -227,33 +227,14 @@ l1.use_keyboard('Tab')
 l1.charge_laptop()
 
 
-#chess game is played with the board and pieces that are pawns, rooks, bishop,king,queen....
 
-class Piece:
-    def __init__(self, color):
-        self.color=color
+#destructor example
+class A:
+    def __init__(self):
+        print('the object is initialized')
         
-#pawn is the typoe of piece
-class Pawn(Piece):
-    def __init__(self, color):
-        super().__init__(color)
-        self.type='pawn'
-        
-#board has 8 pawns of each color.will have 1 king,queen of each color.
-# class Board:
-#     def __init__(self):
-#         self.grid=[[None for _ in range(8)] for _ in range(8)]
-#     def init_board(self):
-#         #create pawns to be placed on second and last but second row.
-#         self.grid[1]=[Pawn('White') for _ in range(8)]
-#         self.grid[6]=[Pawn('Black') for _ in range(8)]
-#     def print_board(self):
-#         for row in self.grid:
-#             print([piece.type if piece else '___' for piece in ])
-
-
-
-# class GameL:
+    def __del__(self):
+        print('the object is destroyed')
             
 
 
