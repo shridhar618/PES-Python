@@ -49,29 +49,42 @@
 #use public method to access the data from outside the class
 class Employee:
     def __init__(self, name, dept, salary):
-        self.name = name  # Public attribute
-        self.dept = dept
-        self.salary = salary  # Private attribute
-        
-    
+        self.name = name      # Public attribute
+        self._dept = dept      # Protected attribute
+        self.__salary = salary  # Private attribute (note the double underscore)
 
+    # Public method
     def show(self):
-        print(f"I am {self.name} working in {self.dept} for Rs. {self.salary} salary")
+        print(f"I am {self.name} working in {self.dept} for Rs. {self.__salary} salary")
 
-    #protected method to access the data member
+    # Protected method
     def _display(self):
-        print(f"I am {self.name} working in {self.dept} for Rs. {self.salary} salary")
-     
-    #private method to access the data member   
+        print(f"[Protected] I am {self.name} working in {self.dept} for Rs. {self.__salary} salary")
+
+    # Private method
     def __see(self):
-        print(f"I am {self.name} working in {self.dept} for Rs. {self.salary} salary")
-        
-        
-    #private method to access data member
-e1=Employee('XYZ', 'IT', 10000)
+        print(f"[Private] I am {self.name} working in {self.dept} for Rs. {self.__salary} salary")
+
+    # Public method to access private method
+    def access_private(self):
+        self.__see()  # Calling the private method inside a public one
+
+
+# Create object
+e1 = Employee('XYZ', 'IT', 10000)
+
+# Access public method
 e1.show()
+
+# Access protected method (possible, but not recommended)
 e1._display()
-# e1.__see()
+
+# Access private method (NOT allowed directly)
+# e1.__see()   ❌  This will cause an AttributeError
+
+# Access private method through a public method
+e1.access_private()  #✅
+
 
 
 #usage of getter and setter method

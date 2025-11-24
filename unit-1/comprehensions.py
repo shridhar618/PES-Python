@@ -1,4 +1,17 @@
 #---------------------list comprehension-------------------
+squares = [x**2 for x in range(5)]
+print(squares)
+# Output: [0, 1, 4, 9, 16]
+
+even_squares = [x**2 for x in range(10) if x % 2 == 0]
+print(even_squares)
+# Output: [0, 4, 16, 36, 64]
+
+matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+flat = [num for row in matrix for num in row]
+print(flat)
+# Output: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
 l=[a for a in range(20)]
 print(l)
 
