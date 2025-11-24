@@ -15,7 +15,6 @@ class Laptop:
     def specifications(self):
         print(f"Laptop Details \n Brand: {self.brand} \n Model: {self.model} \n Price: ${self.price}")
         
-        
     def turn_off(self):
         return f"{self.brand} {self.model} is now OFF"
     

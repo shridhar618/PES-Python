@@ -87,3 +87,36 @@ print(d)
 
 
 
+#___________________________________________________________________________________________________________
+#Anonymous function
+f=lambda x:x**2
+print(f(10))
+
+
+l=[1,4,7,9,-9,67.8]
+#map function to square each element
+x=map(lambda x:x**2,l)
+print(list(x))
+
+#map function to find length of each string
+d=list(map(len,['apple', 'banana', 'cherry', 'date']))
+print(d)
+
+
+def square(n):
+    return n**2
+sq=list(map(square, [1,2,3,4,5,6,7,8,9]))
+print(sq)
+
+#filter function
+c=[10,25,30,45,50,60]
+d=list(filter(lambda x:x%2==0,c))
+print(d)
+
+
+#Lambda functions condition based 
+is_even=lambda x: x%2==0
+print(is_even(10))
+
+l=list(map(is_even, [10,11,23,56,82,90]))
+print(l)
