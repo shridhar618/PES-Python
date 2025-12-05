@@ -29,3 +29,34 @@ try:
         print(f"Your salary is {salary}")
 except SalaryNotInRange as e:
     print(f"SalaryNotInRange: {e.sal} is invalid. {e.msg}")
+    
+    
+    
+
+#raising built-in exceptions
+try:
+    x=int(input("Enter the numerator: "))
+    y=int(input("Enter the denominator: "))
+    z=x/y
+    if z>10:
+        raise ValueError(z)
+    
+except ValueError:
+    print(f"{z} is outside the given range.")
+else:
+    print(f"{z} is within the given range.")
+    
+    
+    
+    
+try:
+    x=int(input("Enter the numerator: "))
+    y=int(input("Enter the denominator: "))
+    z=x/y
+    if y==0:
+        raise ValueError("Denominator cannot be zero.")
+    
+except Exception as e:
+    print(f"An error occurred: {e}")
+else:
+    print(f"The result is: {z}")
