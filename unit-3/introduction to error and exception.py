@@ -1,13 +1,13 @@
 # #syntax error 
-x=10
-if x==10
-print(x)  
+# x=10
+# if x==10
+# print(x)  
 
 
 
-x=10
-if x==10:
-print(x) #indentation error
+# x=10
+# if x==10:
+# print(x) #indentation error
 
 
 
