@@ -24,6 +24,9 @@ new_sheet['A1']="Hello, Excel!"
 new_sheet['B1']=100
 new_wb.save('new_sample.xlsx')
 
+#Read the data from a cell
+print(f'The value stored in cell D5 is : {sheet["D5"].value}')
+
 #Iterate through rows and columns
 for row in sheet.iter_rows(min_row=1, max_row=5, min_col=1, max_col=2):
     for cell in row:
