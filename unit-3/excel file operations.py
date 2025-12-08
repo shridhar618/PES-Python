@@ -18,6 +18,7 @@ wb.save('sample_modified.xlsx')
 
 #Create a new workbook and add data
 new_wb=openpyxl.Workbook()
+#call the active sheet
 new_sheet=new_wb.active
 new_sheet['A1']="Hello, Excel!"
 new_sheet['B1']=100
