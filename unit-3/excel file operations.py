@@ -55,6 +55,14 @@ max_column=sheet.max_column
 print(f"Max Row: {max_row}, Max Column: {max_column}")
 
 
+
+#reading data from a range of cells
+list1=list()
+for value in sheet.iter_rows(min_row=1, max_row=4, min_col=1, max_col=4, values_only=True):
+    list1.append(value)
+print(list1)
+
+
 #Merge cells
 sheet.merge_cells('C1:D1')
 sheet['C1']="Merged Cell"
@@ -64,3 +72,17 @@ wb.save('sample_modified.xlsx')
 #Unmerge cells
 sheet.unmerge_cells('C1:D1')
 wb.save('sample_modified.xlsx') 
+
+
+#Displaying the values in a tabular method
+for e1,e2,e3,e4 in list1:
+    '''unpacking of a tuple'''
+    print("{:<10} {:<35} {:<10} {:<5}".format(e1,e2,e3,e4))
+    
+    
+#wite to a cell
+sheet['K1']='Total Sales'
+sheet['K2']=1500
+sheet['K3']=2000
+sheet['K4']=2500
+wb.save('sample_modified.xlsx')
