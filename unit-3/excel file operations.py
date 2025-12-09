@@ -86,3 +86,25 @@ sheet['K2']=1500
 sheet['K3']=2000
 sheet['K4']=2500
 wb.save('sample_modified.xlsx')
+
+
+#add values in the 4 columns to get total sales
+r_pos=2
+col_pos=11 #column K
+t_sales=((sheet.cell(row=r_pos, column=col_pos).value) +
+         (sheet.cell(row=r_pos+1, column=col_pos).value) +
+         (sheet.cell(row=r_pos+2, column=col_pos).value))
+sheet.cell(row=r_pos+3, column=col_pos).value=t_sales
+wb.save('sample_modified.xlsx')
+
+#create a loop to sum the sales value in each row
+r_pos=1
+for i in range(1,sheet.max_row+1):
+    r_pos+=1
+    N_sales=sheet.cell(row=r_pos, column=11).value
+    S_sales=sheet.cell(row=r_pos, column=12).value
+    E_sales=sheet.cell(row=r_pos, column=13).value
+    W_sales=sheet.cell(row=r_pos, column=14).value
+    total_sales=N_sales+S_sales+E_sales+W_sales
+    sheet.cell(row=r_pos, column=15).value=total_sales
+wb.save('sample_modified.xlsx')
