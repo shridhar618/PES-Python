@@ -194,3 +194,19 @@ sheet.title='RenamedSheet'
 wb.save('sample_modified.xlsx')
 print("Sheet renamed successfully.")
 print(f'New title of the sheet is: {sheet.title}')
+
+#Duplicate a worksheet
+duplicated_sheet=wb.copy_worksheet(sheet)
+duplicated_sheet.title='DuplicatedSheet'
+wb.save('sample_modified.xlsx')
+print("Worksheet duplicated successfully.")
+print(f'The title of the duplicated sheet is: {duplicated_sheet.title}')
+
+
+#delete a worksheet
+wb.remove(duplicated_sheet)
+wb.save('sample_modified.xlsx')
+print("Duplicated worksheet deleted successfully.")
+print(f'Current sheets in the workbook: {wb.sheetnames}')
+
+ 
