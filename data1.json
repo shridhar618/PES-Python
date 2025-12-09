@@ -1,6 +1,1 @@
-[
-    {
-        "name": "Shridhar",
-        "age": 21
-    }
-]
+{"name": "Alice", "age": 25, "city": "Los Angeles"}
