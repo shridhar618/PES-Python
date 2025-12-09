@@ -37,4 +37,12 @@ with open('data.json', 'r') as jsonfile:
     print(data_loaded)
     
     
+p='{name: "Alice", age: 25, city: "Los Angeles"}'
+p1={"name": "Alice", "age": 25, "city": "Los Angeles"}
+print(type(p))
+print(type(p1))
+
+print(p1['name'])
+    
+    
     
