@@ -183,3 +183,14 @@ if count > 0:
 wb.save('VideoSales.xlsx')
 
 print("✅ All Excel operations completed successfully!")
+
+
+#title of active sheet
+sheet_title=sheet.title
+print(f'The title of the active sheet is: {sheet_title}')
+
+#rename a sheet
+sheet.title='RenamedSheet'
+wb.save('sample_modified.xlsx')
+print("Sheet renamed successfully.")
+print(f'New title of the sheet is: {sheet.title}')
