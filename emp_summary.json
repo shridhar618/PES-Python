@@ -1,0 +1,15 @@
+{
+    "Highest Salary": {
+        "name": "Neha",
+        "salary": 55000
+    },
+    "Lowest Salary": {
+        "name": "Maya",
+        "salary": 40000
+    },
+    "Average per Dept": {
+        "IT": 52500.0,
+        "HR": 41000.0,
+        "Finance": 45000.0
+    }
+}

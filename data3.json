@@ -1,14 +1,1 @@
-{
-    "Shridhar":{
-        "age": 21,
-        "city": "Bangalore"
-    },
-    "Rohit":{
-        "age": 36,
-        "city": "Mumbai"
-    },
-    "Virat":{
-        "age": 37  ,
-        "city": "Delhi"    
-}
-}
+{"name": "Alice", "age": 25, "city": "Los Angeles"}

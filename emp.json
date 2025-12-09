@@ -1,0 +1,27 @@
+[
+    {
+        "name": "John",
+        "dept": "IT",
+        "sal": 50000
+    },
+    {
+        "name": "Maya",
+        "dept": "HR",
+        "sal": 40000
+    },
+    {
+        "name": "Arjun",
+        "dept": "Finance",
+        "sal": 45000
+    },
+    {
+        "name": "Neha",
+        "dept": "IT",
+        "sal": 55000
+    },
+    {
+        "name": "Kiran",
+        "dept": "HR",
+        "sal": 42000
+    }
+]
