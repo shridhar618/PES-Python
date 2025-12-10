@@ -1,3 +1,4 @@
+#-------------------------------------------1.Laptop class---------------------------------------------
 class Laptop:
     #init method called automatically when the object has been created for this class
     #self represents the object
@@ -88,6 +89,8 @@ l1.update_battery_status(100)
 l1.check_battery
 
 
+
+#-------------------------------------------2.Dog class---------------------------------------------
 #A dog has a name and is of a perticular breed and has an age. the dog barks and sleeps.
 class Dog:
     def __init__(self,name,breed,age):
