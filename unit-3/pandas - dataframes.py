@@ -119,26 +119,26 @@ print(df3)
 
 
 
-df5=pd.read_csv('data.csv')
-print(df5)
+# df5=pd.read_csv('data.csv')
+# print(df5)
 
-df6=pd.read_excel('data.xlsx')
-print(df6)
+# df6=pd.read_excel('data.xlsx')
+# print(df6)
 
-df7=pd.read_json('data.json')
-print(df7)
+# df7=pd.read_json('data.json')
+# print(df7)
 
-df8=pd.read_html('data.html')
-print(df8[0])  #printing the first table found in the HTML file
+# df8=pd.read_html('data.html')
+# print(df8[0])  #printing the first table found in the HTML file
 
-df8=pd.DataFrame()
-print(df8)  
+# df8=pd.DataFrame()
+# print(df8)  
 
 
 #inspection methods
-df7.head()
-df7.tail()
-df7.info()
-df7.describe()
-df7.shape
-df7.columns
+# df7.head()
+# df7.tail()
+# df7.info()
+# df7.describe()
+# df7.shape()
+# df7.columns()
