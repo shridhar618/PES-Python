@@ -131,6 +131,47 @@ print(books)
 #modification of a xml file
 tree=xml.ElementTree(file='books.xml')
 root=tree.getroot()
+#iterate over price
+for p_ele in root.iter('Price'):
+    p=int(p_ele.text)
+    p+=20
+    p_ele.text=str(p)
+#write the new data back into xml file
+with open('books.xml',"wb") as f:
+    tree.write(f)
+print("Price updated")
+    
+    
+#wite an xml file called as emp.xml it contains name, age and salary of every employee. once the xml file is created, modify the existing sal by increasing it by 5%. update the file and show the changed salary.
+employees=[
+    {'Name':'John Doe', 'Age':'30', 'Salary':'50000'},
+    {'Name':'Jane Smith', 'Age':'25', 'Salary':'60000'}
+]
+
+#creating emp.xml
+root=xml.Element("employees")
+for emp in employees:
+    emp_elem=xml.Element("employee")
+    for key, val in emp.items():
+        child=xml.SubElement(emp_elem, key)
+        child.text=str(val)
+    root.append(emp_elem)
+tree=xml.ElementTree(root)
+with open('emp.xml',"wb") as fh:
+    tree.write(fh)
+print("emp.xml file has been created")
+#modifying salary by increasing 5%
+tree=xml.ElementTree(file='emp.xml')
+root=tree.getroot()
+for sal_ele in root.iter('Salary'):
+    sal=int(sal_ele.text)
+    sal+=sal*0.05
+    sal_ele.text=str(int(sal))
+with open('emp.xml',"wb") as f:
+    tree.write(f)
+print("Salary updated in emp.xml")
+
+    
 
     
     
