@@ -97,3 +97,38 @@ df.columns=df.columns.str.strip().str.lower().str.replace(' ','_').str.replace('
 print(df.columns)
 
 
+print(df.dtypes)
+
+
+#equivalent commands 
+df=df.drop(columns=['passed'])
+print(df)
+
+
+
+df=df.iloc[:,:-1]
+#drop column by column positions 
+#drop the last column
+print(df)
+
+
+df=df.loc[:, df.columns!='age']
+#drop column by column names
+print(df)
+
+#standardize text columns
+data4={'Name':['  Alice  ','  Bob','Charlie  ','  David  '],
+      'City':[' New York ','Los Angeles ',' Chicago',' Houston ']
+      } 
+df4=pd.DataFrame(data4)
+print("\nDataFrame before standardizing text columns:")
+print(df4)  
+df4['Name']=df4['Name'].str.strip().str.title()
+print("\nDataFrame after standardizing text columns:")
+print(df4)
+
+
+#remove quotes in all columns
+df = df4.apply(lambda c: c.str.replace('"', '', regex=False))
+print("\nDataFrame after removing quotes:")
+print(df)
