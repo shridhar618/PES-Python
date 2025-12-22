@@ -11,7 +11,7 @@ with open('data.csv', 'w', newline='') as csvfile:
     writer.writeheader()
     writer.writerow({'Name': 'Alice', 'Age': 14, 'Grade': '9'})
     writer.writerow({'Name': 'Bob', 'Age': 15, 'Grade': '10'})
-    writer.writerow({'Name': 'Charlie', 'Age': 13, 'Grade': '8'})
+    writer.writerow({'Name': 'Charlie', 'Age': 13, 'Grade': '8'}) 
 
 # -------------------------------
 # Reading from a CSV file
