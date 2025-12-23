@@ -65,3 +65,8 @@ s_all1.to_excel('sales_all.xlsx', index=False)
 # s_all1.to_json('sales_all.json')
 # s_all.to_xml('sales_all.xml', index=False)
 s_all.to_html('sales_all.html')
+
+
+
+
+
