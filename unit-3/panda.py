@@ -38,4 +38,25 @@ m_outer1=pd.merge(sd,pr, on='ProductID', how='outer')
 print(m_outer.shape, m_outer1.shape)
 print(m_outer)
 
+#combine two dataframes vertically
+s1=pd.read_csv('sales.csv')
+s2=pd.read_csv('sales_q2.csv')
 
+#check whether two dataframes have same structure
+print(s1.shape, s2.shape)
+print(s1.columns)
+print(s2.columns)
+
+s_all=pd.concat([s1,s2], ignore_index=True)
+s_all1=pd.concat([s1,s2])
+print(s_all.shape)
+print(s_all1.shape)
+
+print(s_all.head())
+print(s_all)
+print(s_all1)
+
+
+#export the dataframe 
+s_all.to_csv('sales_all.csv', index=False)
+s_all.to_csv('sales_all_1.csv')
