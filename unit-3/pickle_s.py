@@ -128,4 +128,12 @@ print(p_df)
 print(type(df))
 
 #Loads and Dumps
+a=10
+p_a=p.dumps(a)
+print(p_a), print(type(p_a))
 
+print(p.loads(p_a))
+
+b=45.7; c=9+1j; d='Hello'
+p_b=p.dumps(b); p_c=p.dumps(c); p_d=p.dumps(d)
+print(f'desirialized data is {p.loads(p_b)}, {p.loads(p_c)}, {p.loads(p_d)}')
