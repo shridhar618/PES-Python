@@ -1,6 +1,10 @@
 import psycopg2 as psy
 
-conn=psy.connect(dbname="college",user='postgres',password='macmhn1',host='localhost',port='5432')
+conn=psy.connect(dbname="college",
+                 user='postgres',
+                 password='macmhn1',
+                 host='localhost',
+                 port='5432')
 
 if conn:
     print("Connection successfull.")
