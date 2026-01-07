@@ -84,3 +84,5 @@ except req.exceptions.RequestException as e:
 except ValueError:
     print("Error parsing JSON response.")
     
+    
+print(data)
