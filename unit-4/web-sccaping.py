@@ -43,4 +43,23 @@ print(rows)
 print("\n\n")
 print(type(rows))
 
+#get all table rows in a list form and convert into a data frame
+for row in rows:
+    cols=row.find_all('td')
+    print(cols)
+    print("\n")
+print(type(cols))
 
+
+#extract the data without the html tag
+str_cells=str(cols)
+cleaned_text=bs(str_cells, 'lxml').get_text()
+print(cleaned_text)
+print("\n")
+print(type(cleaned_text))
+
+
+#convert into the data frame
+import pandas as pd
+df=pd.DataFrame(cleaned_text)
+print(df)
