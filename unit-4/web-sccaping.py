@@ -1,65 +1,159 @@
-
 from urllib.request import urlopen
-#Web scraping of static web page using BeautifulSoup
+import ssl
 from bs4 import BeautifulSoup as bs
+import pandas as pd
+import re
 
-#specify the url containing the dataset
+# ----------------------------
+# FIX SSL ERROR (important on macOS)
+# ----------------------------
+context = ssl._create_unverified_context()
+
+# ----------------------------
+# URL
+# ----------------------------
 url = "https://tatamumbaimarathon.procam.in/results/race-results"
 
-#pass the url to urlopen function and get the webpage
-html = urlopen(url)
-#content is writtened as file like a object that can be read and processed
-type(html)
+# ----------------------------
+# OPEN WEBPAGE
+# ----------------------------
+response = urlopen(url, context=context)
+print(type(response))
 
-#construct a beautiful soup object using the html content
-soup = bs(html, 'lxml')
-#it interprets the html
-#it takes the unprocessed html text and converts it into python objrects
-#lxml refers to html parser
-type(soup)
+# ----------------------------
+# PARSE HTML
+# ----------------------------
+soup = bs(response, "lxml")
+print(type(soup))
 
-
-title=soup.title
+# ----------------------------
+# TITLE
+# ----------------------------
+title = soup.title
 print(title)
 print(type(title))
 
-
-
-text=soup.get_text()
-print(text)
+# ----------------------------
+# PAGE TEXT
+# ----------------------------
+text = soup.get_text()
 print(type(text))
-print(soup.text)
+# print(text)   # (optional – very large output)
 
-
-soup.find_all('a')
-all_links=soup.find_all('a')
+# ----------------------------
+# EXTRACT LINKS
+# ----------------------------
+all_links = soup.find_all("a")
 for link in all_links:
-    print(link.get('href'))
-    
-    
-#extract tabular data
-rows=soup.find_all('tr')
-print(rows)
-print("\n\n")
+    print(link.get("href"))
+
+# ----------------------------
+# EXTRACT TABLE ROWS
+# ----------------------------
+rows = soup.find_all("tr")
+print("\nROWS FOUND:", len(rows))
 print(type(rows))
 
-#get all table rows in a list form and convert into a data frame
+# ----------------------------
+# GET ALL TABLE DATA
+# ----------------------------
+table_data = []
+
 for row in rows:
-    cols=row.find_all('td')
-    print(cols)
-    print("\n")
-print(type(cols))
+    cols = row.find_all("td")
+    cols = [col.get_text(strip=True) for col in cols]
+    if cols:
+        table_data.append(cols)
+
+# ----------------------------
+# SHOW RAW TABLE DATA
+# ----------------------------
+print("\nTABLE DATA:")
+for row in table_data:
+    print(row)
+
+# ----------------------------
+# CONVERT TO DATAFRAME (CORRECT WAY)
+# ----------------------------
+if table_data:
+    df = pd.DataFrame(table_data)
+    print("\nDATAFRAME:")
+    print(df.head())
+else:
+    print("\nNo table data found (page is JS based).")
+
+# ----------------------------
+# CLEAN HTML USING BEAUTIFULSOUP (not regex)
+# ----------------------------
+if rows:
+    str_cells = str(rows)
+    cleaned_text = bs(str_cells, "lxml").get_text()
+    print("\nCLEANED TEXT:")
+    print(cleaned_text[:500])   # show first 500 chars
+    print(type(cleaned_text))
+
+# ----------------------------
+# REGEX METHOD (your way – fixed)
+# ----------------------------
+list_rows = []
+
+for row in rows:
+    cells = row.find_all("td")
+    str_cells = str(cells)
+    clean = re.compile("<.*?>")
+    clean_text = re.sub(clean, "", str_cells)
+    if clean_text.strip():
+        list_rows.append(clean_text)
+
+print("\nREGEX CLEANED ROWS:")
+print(list_rows)
+
+#remove the opening square bracket
+df1 = pd.DataFrame(list_rows)
+df1[0] = df1[0].str.lstrip('[')
+print("\nDATAFRAME FROM REGEX METHOD:")
+print(df1.head())
 
 
-#extract the data without the html tag
-str_cells=str(cols)
-cleaned_text=bs(str_cells, 'lxml').get_text()
-print(cleaned_text)
-print("\n")
-print(type(cleaned_text))
+#remove the closing square bracket
+df1[0] = df1[0].str.rstrip(']')
+print("\nDATAFRAME AFTER REMOVING CLOSING BRACKET:")
+print(df1.head())
 
 
-#convert into the data frame
-import pandas as pd
-df=pd.DataFrame(cleaned_text)
-print(df)
+#get the headers for the columns
+col_labels = soup.find_all("th")
+print(col_labels)
+print("\n\n")
+print(type(col_labels))
+all_header = []
+col_str=str(col_labels)
+clean_text=bs(col_str,"lxml").get_text()
+all_header.append(clean_text)
+print("\nCLEANED HEADERS:")
+print(all_header)
+
+
+df2 = pd.DataFrame(all_header)
+print(df2)
+
+df3=df2[0].str.split(',',expand=True)
+print("\nSPLIT HEADERS DATAFRAME:")
+print(df3.head())
+
+df3[0]=df3[0].str.strip('[')
+df3[4]=df3[4].str.strip(']')
+print("\nCLEANED SPLIT HEADERS DATAFRAME:")
+print(df3.head())
+
+
+#merge two dataframes
+frames=[df3,df1]
+df4=pd.concat(frames,ignore_index=True)
+print("\nMERGED DATAFRAME:")
+print(df4.head())
+
+#assingn the first row as header
+df5=df4.rename(columns=df4.iloc[0]).drop(df4.index[0])
+print("\nFINAL DATAFRAME WITH HEADERS:")
+print(df5.head())
