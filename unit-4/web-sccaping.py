@@ -125,3 +125,74 @@ print(df.head())
 
 #get the mean time taken by each nationality
 df5 = df.groupby('NATIONALITY')['FINISH TIME (MINUTES)'].mean().reset_index()
+
+df5['NATIONALITY'].value_counts()
+
+#get the difference of minutes between each runner
+df5['TIME DIFFERENCE'] = df5['FINISH TIME (MINUTES)'].diff().fillna(0)
+
+
+#define the category of the number of the runners based on the time taken
+df5['CATEGORY'] = pd.cut(df5['FINISH TIME (MINUTES)'], bins=[0, 120, 180, 240, 300, 360, 420], labels=['<2 hours', '2-3 hours', '3-4 hours', '4-5 hours', '5-6 hours', '>6 hours'])
+print(df5.head())
+
+
+#visualize the data
+import matplotlib.pyplot as plt
+
+#create a histogram to show the frequency of runners per time
+plt.hist(df5['FINISH TIME (MINUTES)'], bins=10, color='blue', alpha=0.7)
+plt.title('Distribution of Finish Times')
+plt.xlabel('Finish Time (Minutes)')
+plt.ylabel('Frequency')
+plt.show()
+
+
+#create box plot for time duration
+plt.boxplot(df5['FINISH TIME (MINUTES)'])
+plt.title('Box Plot of Finish Times')
+plt.show()
+
+#create bargraph for each nationality
+nat_c=df5['NATIONALITY'].value_counts()
+nat_c.plot(kind='bar')
+df5.groupby('NATIONALITY')['FINISH TIME (MINUTES)'].mean().plot(kind='bar')
+plt.title('Average Finish Time by Nationality')
+plt.xlabel('Nationality')
+plt.ylabel('Average Finish Time (Minutes)')
+plt.show()
+
+
+#create sctterplots
+plt.scatter(df5['NATIONALITY'], df5['FINISH TIME (MINUTES)'])
+plt.title('Finish Time by Nationality')
+plt.xlabel('Nationality')
+plt.ylabel('Finish Time (Minutes)')
+plt.show()
+
+
+#create horizontal bar graphs
+top10=df5.nsmallest(10, 'FINISH TIME (MINUTES)')
+plt.barh(top10['NATIONALITY'], top10['FINISH TIME (MINUTES)'])
+plt.title('Top 10 Nationalities by Finish Time')
+plt.xlabel('Finish Time (Minutes)')
+plt.ylabel('Nationality')
+plt.show()
+
+
+top10=df5.nsmallest(10, 'FINISH TIME (MINUTES)')
+plt.barh(top10['NAMES'], top10['FINISH TIME (MINUTES)'])
+plt.title('Top 10 Nationalities by Finish Time')
+plt.xlabel('Finish Time (Minutes)')
+plt.ylabel('Nationality')
+plt.show()
+
+
+#line graphs
+plt.plot(df5['FINISH TIME (MINUTES)'].expanding().mean())
+plt.title('Average Finish Time Over Time')
+plt.xlabel('Index')
+plt.ylabel('Average Finish Time (Minutes)')
+plt.show()
+
+
