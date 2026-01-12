@@ -35,4 +35,12 @@ soup.find_all('a')
 all_links=soup.find_all('a')
 for link in all_links:
     print(link.get('href'))
+    
+    
+#extract tabular data
+rows=soup.find_all('tr')
+print(rows)
+print("\n\n")
+print(type(rows))
+
 
