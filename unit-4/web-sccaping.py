@@ -157,3 +157,16 @@ print(df4.head())
 df5=df4.rename(columns=df4.iloc[0]).drop(df4.index[0])
 print("\nFINAL DATAFRAME WITH HEADERS:")
 print(df5.head())
+
+
+#drop all rows with missing values
+df6=df5.dropna(axis=0, how='any')
+print("\nDATAFRAME AFTER DROPPING ROWS WITH MISSING VALUES:")
+print(df6.head())
+
+
+#drop row 1
+df5=df5.drop(index=1)
+print("\nDATAFRAME AFTER DROPPING ROW 1:")
+print(df5.head())
+
