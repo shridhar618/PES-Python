@@ -1,8 +1,5 @@
 import time
 import csv
-import shutil
-import zipfile
-
 from pathlib import Path
 from selenium import webdriver as wd
 from selenium.webdriver.chrome.options import Options
@@ -10,120 +7,189 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait as WDW
 from selenium.webdriver.support import expected_conditions as EC
 
-#define the endpoints
-URL="https://airquality.cpcb.gov.in/AQI_India/"
+# -------------------------
+# CONFIG
+# -------------------------
+URL = "https://airquality.cpcb.gov.in/AQI_India/"
 
-PROFILE_DIR=str(Path.cwd()/ "chrome_profile_aqi")
-DOWNLOAD_DIR=str(Path.cwd()/ "aqi_data")
+PROFILE_DIR = Path.cwd() / "chrome_profile_aqi"
+DOWNLOAD_DIR = Path.cwd() / "aqi_data"
 DOWNLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
-#create a chrome option object
+# -------------------------
+# START DRIVER
+# -------------------------
 def start_driver():
     options = Options()
-    options.add_argument(f"--window-size=1500,900")
+    options.add_argument("--window-size=1500,900")
     options.add_argument(f"--user-data-dir={PROFILE_DIR}")
-    options.add_argument(f"--disable-gpu")
-    options.add_argument('--log-level=3')
-    prefs = {"download.default_directory": str(DOWNLOAD_DIR.resolve()),
-             "download.prompt_for_download": False,
-                "download.directory_upgrade": True,
-                "safebrowsing.enabled": True
-            }
+    options.add_argument("--disable-gpu")
+    options.add_argument("--log-level=3")
+
+    # Chrome path for macOS
+    options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+
+    prefs = {
+        "download.default_directory": str(DOWNLOAD_DIR.resolve()),
+        "download.prompt_for_download": False,
+        "download.directory_upgrade": True,
+        "safebrowsing.enabled": True
+    }
     options.add_experimental_option("prefs", prefs)
+
     driver = wd.Chrome(options=options)
-    return wd.Chrome(options=options)
+    return driver
 
 
-#define the methods for downloading files
+# -------------------------
+# WAIT FOR DOWNLOAD
+# -------------------------
 def wait_for_downloads(timeout_sec=180):
-    t0=time.time()
-    while time.time()-t0 < timeout_sec:
-        cr=list(DOWNLOAD_DIR.glob("*.crdownload"))
-        if cr:
+    t0 = time.time()
+    while time.time() - t0 < timeout_sec:
+        # wait while chrome is downloading
+        if list(DOWNLOAD_DIR.glob("*.crdownload")):
             time.sleep(0.5)
             continue
-        files=[p for p in DOWNLOAD_DIR.glob("*").iterdir() if p.is_file()]
-        if files:
-            latest=max(files, key=lambda p: p.stat().st_mtime)
-            return latest
-        time.sleep(0.5)
-    raise TimeoutError("Download did not complete within the given time limit")
 
-#define a method to check for the events
+        files = [p for p in DOWNLOAD_DIR.iterdir() if p.is_file()]
+        if files:
+            return max(files, key=lambda p: p.stat().st_mtime)
+
+        time.sleep(0.5)
+
+    raise TimeoutError("Download did not complete within time")
+
+
+# -------------------------
+# CLOSE MODAL
+# -------------------------
 def close_blocking_modal(driver):
     time.sleep(1)
-    close_xpaths=['//div[@id="myModal"]//button[@class="close"]',
-                  '//div[@id="myModal"]//button[contains(.,"Close")]',
-                  '//div[@id="myModal"]//button[contains(.,"OK")]',
-                  '//div[@id="myModal"]//button[contains(.,"I Agree")]',]
+    close_xpaths = [
+        '//div[@id="myModal"]//button[@class="close"]',
+        '//div[@id="myModal"]//button[contains(.,"Close")]',
+        '//div[@id="myModal"]//button[contains(.,"OK")]',
+        '//div[@id="myModal"]//button[contains(.,"I Agree")]'
+    ]
+
     for xp in close_xpaths:
         try:
-            el=WDW(driver,5).until(EC.element_to_be_clickable((By.XPATH,xp)))
+            btn = WDW(driver, 5).until(
+                EC.element_to_be_clickable((By.XPATH, xp))
+            )
             driver.execute_script("arguments[0].click();", btn)
             time.sleep(1)
             return
         except Exception:
             pass
 
-    driver.execute_script('''
-                          document.getElementById("myModal").style.display="none";
-                          if (m) m.remove();
-                          const n=document.getElementsByClassName("modal-backdrop");
-                          if(n) n.remove();
-                          document.body.classList.remove("modal-open");''')
-    
-    
-        
-        
-#start the browser session 
-driver=start_driver()
+    # force remove modal if still visible
+    driver.execute_script("""
+        const m = document.getElementById("myModal");
+        if (m) m.style.display = "none";
+        const b = document.getElementsByClassName("modal-backdrop");
+        if (b.length) b[0].remove();
+        document.body.classList.remove("modal-open");
+    """)
 
-#do the actual scripts and download the documents
+
+# -------------------------
+# MAIN SCRIPT
+# -------------------------
+driver = start_driver()
+
 try:
     driver.get(URL)
-    WDW(driver,100).until(lambda d: d.execute_script('return document.readyState') == 'complete')
-    rep_l=WDW(driver,100).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(.,"AQI Data Repository") or contains(.,"AQI Data Repositary") or containes(.,"AQI Data") or contains(.,"Air Quality Data")]")))
-    
+
+    WDW(driver, 60).until(
+        lambda d: d.execute_script("return document.readyState") == "complete"
+    )
+
+    repo_link = WDW(driver, 60).until(
+        EC.element_to_be_clickable((
+            By.XPATH,
+            "//a[contains(.,'AQI Data Repository') or "
+            "contains(.,'AQI Data Repositary') or "
+            "contains(.,'AQI Data') or "
+            "contains(.,'Air Quality Data')]"
+        ))
+    )
+
     close_blocking_modal(driver)
-    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", rep_l)
+
+    driver.execute_script(
+        "arguments[0].scrollIntoView({block:'center'});", repo_link
+    )
     time.sleep(0.5)
-    driver.execute_script("arguments[0].click();", rep_l)
-    WDW(driver,100).until(lambda d: len(d.window_handles)>1)
-    
-    if len(driver.window_handles)>1:
-        driver.switch_to.window(driver.window_handles[-1])
-        
-    WDW(driver,180).until(EC.presence_of_all_elements_located((By.TAG_NAME, "table")))
-    
-    
-    table=driver.find_element(By.TAG_NAME, "table")
-    rows=table.find_elements(By.TAG_NAME, "tr")
-    download_logs=[]
+    driver.execute_script("arguments[0].click();", repo_link)
+
+    # switch to new tab
+    WDW(driver, 30).until(lambda d: len(d.window_handles) > 1)
+    driver.switch_to.window(driver.window_handles[-1])
+
+    WDW(driver, 60).until(
+        EC.presence_of_element_located((By.TAG_NAME, "table"))
+    )
+
+    table = driver.find_element(By.TAG_NAME, "table")
+    rows = table.find_elements(By.TAG_NAME, "tr")
+
+    download_logs = []
+
     for r in rows[1:]:
-        tds=r.find_elements(By.TAG_NAME, "td")
-        if len(tds)<2:
+        tds = r.find_elements(By.TAG_NAME, "td")
+        if len(tds) < 2:
             continue
-        year=tds[0].text.strip()
+
+        year = tds[0].text.strip()
         if not year.isdigit():
             continue
-        before=set(DOWNLOAD_DIR.iterdir())
-        
-        download_cell=tds[1]
-        clickable=None
-        can=download_cell.find_elements(By.TAG_NAME, "a,button")
-        if can:
-            clickable=can[0]
+
+        download_cell = tds[1]
+        clickable = None
+
+        links = download_cell.find_elements(By.TAG_NAME, "a")
+        if links:
+            clickable = links[0]
         else:
-            icons=download_cell.find_elements(By.TAG_NAME, "i,span,div")
-            if icons:
-                clickable=icons[0]
+            btns = download_cell.find_elements(By.TAG_NAME, "button")
+            if btns:
+                clickable = btns[0]
+
         if not clickable:
             continue
-        driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", clickable)
-        time.sleep(0.2)
+
+        driver.execute_script(
+            "arguments[0].scrollIntoView({block:'center'});", clickable
+        )
+        time.sleep(0.3)
         driver.execute_script("arguments[0].click();", clickable)
-        downloaded=wait_for_downloads(timeout_sec=180)
-        after=set(DOWNLOAD_DIR.iterdir())
-        new=[p for p in after if p.is_file()]
-        if new:
-            downloaded=max(new, key=lambda p: p.stat().st_mtime)
+
+        downloaded = wait_for_downloads()
+
+        ext = downloaded.suffix.lower()
+        target = DOWNLOAD_DIR / f"aqi_data_{year}{ext}"
+
+        if target.exists():
+            target.unlink()
+
+        downloaded.rename(target)
+        download_logs.append((year, str(target)))
+
+    # save log
+    with open(DOWNLOAD_DIR / "download_log.csv", "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["Year", "FilePath"])
+        writer.writerows(download_logs)
+
+    print(f"✅ Downloaded {len(download_logs)} files.")
+    print(f"📁 Folder: {DOWNLOAD_DIR}")
+
+except Exception as e:
+    driver.save_screenshot(str(DOWNLOAD_DIR / "error_screenshot.png"))
+    print("❌ Error occurred:", e)
+    raise
+
+finally:
+    driver.quit()
