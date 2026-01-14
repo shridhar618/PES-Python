@@ -32,3 +32,16 @@ def start_driver():
     options.add_experimental_option("prefs", prefs)
     driver = wd.Chrome(options=options)
     return wd.Chrome(options=options)
+
+
+#define the methods for downloading files
+def wait_for_downloads(download_path, timeout=60):
+    seconds = 0
+    dl_wait = True
+    while dl_wait and seconds < timeout:
+        time.sleep(1)
+        dl_wait = False
+        for fname in Path(download_path).glob('*.crdownload'):
+            dl_wait = True
+        seconds += 1
+    return seconds
