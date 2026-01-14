@@ -46,3 +46,5 @@ def wait_for_downloads(timeout_sec=180):
         if files:
             latest=max(files, key=lambda p: p.stat().st_mtime)
             return latest
+        time.sleep(0.5)
+    raise TimeoutError("Download did not complete within the given time limit")
