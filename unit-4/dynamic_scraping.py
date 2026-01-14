@@ -35,13 +35,14 @@ def start_driver():
 
 
 #define the methods for downloading files
-def wait_for_downloads(download_path, timeout=60):
-    seconds = 0
-    dl_wait = True
-    while dl_wait and seconds < timeout:
-        time.sleep(1)
-        dl_wait = False
-        for fname in Path(download_path).glob('*.crdownload'):
-            dl_wait = True
-        seconds += 1
-    return seconds
+def wait_for_downloads(timeout_sec=180):
+    t0=time.time()
+    while time.time()-t0 < timeout_sec:
+        cr=list(DOWNLOAD_DIR.glob("*.crdownload"))
+        if cr:
+            time.sleep(0.5)
+            continue
+        files=[p for p in DOWNLOAD_DIR.glob("*").iterdir() if p.is_file()]
+        if files:
+            latest=max(files, key=lambda p: p.stat().st_mtime)
+            return latest
