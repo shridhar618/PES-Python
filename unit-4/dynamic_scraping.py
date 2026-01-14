@@ -23,5 +23,12 @@ def start_driver():
     options.add_argument(f"--window-size=1500,900")
     options.add_argument(f"--user-data-dir={PROFILE_DIR}")
     options.add_argument(f"--disable-gpu")
-    
-    
+    options.add_argument('--log-level=3')
+    prefs = {"download.default_directory": str(DOWNLOAD_DIR.resolve()),
+             "download.prompt_for_download": False,
+                "download.directory_upgrade": True,
+                "safebrowsing.enabled": True
+            }
+    options.add_experimental_option("prefs", prefs)
+    driver = wd.Chrome(options=options)
+    return wd.Chrome(options=options)
