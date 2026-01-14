@@ -20,13 +20,8 @@ DOWNLOAD_DIR.mkdir(parents=True, exist_ok=True)
 #create a chrome option object
 def start_driver():
     options = Options()
+    options.add_argument(f"--window-size=1500,900")
     options.add_argument(f"--user-data-dir={PROFILE_DIR}")
-    prefs = {
-        "download.default_directory": DOWNLOAD_DIR,
-        "download.prompt_for_download": False,
-        "download.directory_upgrade": True,
-        "safebrowsing.enabled": True
-    }
-    options.add_experimental_option("prefs", prefs)
-    driver = wd.Chrome(options=options)
-    return driver
+    options.add_argument(f"--disable-gpu")
+    
+    
