@@ -74,3 +74,23 @@ def close_blocking_modal(driver):
     
     
         
+        
+#start the browser session 
+driver=start_driver()
+
+#do the actual scripts and download the documents
+try:
+    driver.get(URL)
+    WDW(driver,100).until(lambda d: d.execute_script('return document.readyState') == 'complete')
+    rep_l=WDW(driver,100).until(EC.element_to_be_clickable((By.XPATH,"//a[contains(.,"AQI Data Repository") or contains(.,"AQI Data Repositary") or containes(.,"AQI Data") or contains(.,"Air Quality Data")]")))
+    
+    close_blocking_modal(driver)
+    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", rep_l)
+    time.sleep(0.5)
+    driver.execute_script("arguments[0].click();", rep_l)
+    WDW(driver,100).until(lambda d: len(d.window_handles)>1)
+    
+    if len(driver.window_handles)>1:
+        driver.switch_to.window(driver.window_handles[-1])
+        
+    WDW(driver,180).until(EC.presence_of_all_elements_located((By.TAG_NAME, "table")))
