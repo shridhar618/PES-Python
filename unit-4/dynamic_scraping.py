@@ -94,3 +94,36 @@ try:
         driver.switch_to.window(driver.window_handles[-1])
         
     WDW(driver,180).until(EC.presence_of_all_elements_located((By.TAG_NAME, "table")))
+    
+    
+    table=driver.find_element(By.TAG_NAME, "table")
+    rows=table.find_elements(By.TAG_NAME, "tr")
+    download_logs=[]
+    for r in rows[1:]:
+        tds=r.find_elements(By.TAG_NAME, "td")
+        if len(tds)<2:
+            continue
+        year=tds[0].text.strip()
+        if not year.isdigit():
+            continue
+        before=set(DOWNLOAD_DIR.iterdir())
+        
+        download_cell=tds[1]
+        clickable=None
+        can=download_cell.find_elements(By.TAG_NAME, "a,button")
+        if can:
+            clickable=can[0]
+        else:
+            icons=download_cell.find_elements(By.TAG_NAME, "i,span,div")
+            if icons:
+                clickable=icons[0]
+        if not clickable:
+            continue
+        driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", clickable)
+        time.sleep(0.2)
+        driver.execute_script("arguments[0].click();", clickable)
+        downloaded=wait_for_downloads(timeout_sec=180)
+        after=set(DOWNLOAD_DIR.iterdir())
+        new=[p for p in after if p.is_file()]
+        if new:
+            downloaded=max(new, key=lambda p: p.stat().st_mtime)
