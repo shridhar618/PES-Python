@@ -26,6 +26,7 @@ new_wb = openpyxl.Workbook()
 new_sheet = new_wb.active
 new_sheet['A1'] = "Hello, Excel!"
 new_sheet['B1'] = 100
+
 new_wb.save('new_sample.xlsx')
 
 # -------------------------------
