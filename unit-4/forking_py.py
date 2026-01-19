@@ -72,27 +72,80 @@
 
 
 #program to show parellel processing
+# from multiprocessing import Process
+# import os
+
+# def worker(n):
+#     result = n * n
+#     print(f'Process ID: {os.getpid()}, Parent ID: {os.getppid()}, Number: {n}, Result: {result}')
+
+# if __name__ == "__main__":
+#     tasks = [1,2,3,4,5,6,7,8,9,10]
+#     processes = []
+
+#     # Create multiple processes
+#     for n in tasks:
+#         p = Process(target=worker, args=(n,))
+#         p.start()
+#         processes.append(p)
+
+#     # Wait for all child processes to finish
+#     for p in processes:
+#         print(f'Child process ID: {p.pid}')
+#         p.join()
+
+#     print(f'Parent process ID: {os.getpid()}')
+#     print('All processes are done')
+    
+    
+    
+    
+#program to simulate a usecase of log analysis
 from multiprocessing import Process
 import os
 
-def worker(n):
-    result = n * n
-    print(f'Process ID: {os.getpid()}, Parent ID: {os.getppid()}, Number: {n}, Result: {result}')
+LOG_FILE = 'access.log'
+NUM_PROCESSES = 3
 
+LEVELS = ['INFO', 'WARNING', 'ERROR']
+
+
+def split_lines(lines, k):
+    size = len(lines) // k
+    return [lines[i*size: (i+1)*size] for i in range(k)]    
+
+def worker(chunk, OUT_FILE):
+    counts = {level: 0 for level in LEVELS}
+    for line in chunk:
+        parts = line.split()
+        if not parts:
+            continue
+        level = parts[0]
+        
+        if level in counts:
+            counts[level] += 1
+            
+    with open(OUT_FILE, 'w') as f:
+        for l in LEVELS:
+            f.write(f'{l}: {counts[l]}\n')
+            
+            
 if __name__ == "__main__":
-    tasks = [1,2,3,4,5,6,7,8,9,10]
+    with open(LOG_FILE, 'r') as f:
+        lines = f.readlines()
+        
+    chunks = split_lines(lines, NUM_PROCESSES)
     processes = []
-
-    # Create multiple processes
-    for n in tasks:
-        p = Process(target=worker, args=(n,))
+    
+    for i in range(NUM_PROCESSES):
+        OUT_FILE = f'log_summary_{i}.txt'
+        p = Process(target=worker, args=(chunks[i], OUT_FILE))
         p.start()
         processes.append(p)
-
-    # Wait for all child processes to finish
+        
     for p in processes:
-        print(f'Child process ID: {p.pid}')
         p.join()
-
-    print(f'Parent process ID: {os.getpid()}')
-    print('All processes are done')
+        
+    print('Log analysis completed.')
+    
+    
