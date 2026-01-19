@@ -107,15 +107,24 @@ import os
 LOG_FILE = 'access.log'
 NUM_PROCESSES = 3
 
-LEVELS = ['INFO', 'WARNING', 'ERROR']
+LEVELS = ['INFO', 'WARN', 'ERROR']
 
 
 def split_lines(lines, k):
-    size = len(lines) // k
-    return [lines[i * size: (i + 1) * size] for i in range(k)]
+    """
+    Split lines into k chunks without losing any lines
+    using round-robin distribution.
+    """
+    chunks = [[] for _ in range(k)]
+    for i, line in enumerate(lines):
+        chunks[i % k].append(line)
+    return chunks
 
 
 def worker(chunk, out_file):
+    """
+    Count log levels in a chunk and write results to a temp file.
+    """
     counts = {level: 0 for level in LEVELS}
 
     for line in chunk:
@@ -128,19 +137,22 @@ def worker(chunk, out_file):
             counts[level] += 1
 
     with open(out_file, 'w') as f:
-        for l in LEVELS:
-            f.write(f'{l}: {counts[l]}\n')
+        for level in LEVELS:
+            f.write(f'{level}: {counts[level]}\n')
 
 
 if __name__ == "__main__":
+    # Read log file
     with open(LOG_FILE, 'r') as f:
         lines = f.readlines()
 
+    # Split work
     chunks = split_lines(lines, NUM_PROCESSES)
+
     processes = []
     temp_files = []
 
-    # Create processes
+    # Start processes
     for i, chunk in enumerate(chunks):
         out_file = f'Part_{i}.txt'
         temp_files.append(out_file)
@@ -149,7 +161,7 @@ if __name__ == "__main__":
         p.start()
         processes.append(p)
 
-    # Wait for all processes
+    # Wait for all child processes
     for p in processes:
         p.join()
 
@@ -163,7 +175,7 @@ if __name__ == "__main__":
                 final_counts[level] += int(count)
         os.remove(temp_file)
 
-    print(f'Merged Files Counts: {final_counts}')
-    
-    
-    
+    # Final output
+    print("Merged Files Counts:")
+    for level in LEVELS:
+        print(f"{level}: {final_counts[level]}")
