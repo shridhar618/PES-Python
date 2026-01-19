@@ -75,14 +75,24 @@
 from multiprocessing import Process
 import os
 
-def worker(name):
-    result=n*n
-    print(f'Process_id: {os.getpid()}, Parent_id: {os.getppid()}, Worker_name: {name}, Result: {result}')
-    
+def worker(n):
+    result = n * n
+    print(f'Process ID: {os.getpid()}, Parent ID: {os.getppid()}, Number: {n}, Result: {result}')
+
 if __name__ == "__main__":
-    tasks=[1,2,3,4,5,6,7,8,9,10]
-    processes=[]
-    
-    p=Process(target=worker, args=('n,',))
-    p.start()
-    processes.append(p)
+    tasks = [1,2,3,4,5,6,7,8,9,10]
+    processes = []
+
+    # Create multiple processes
+    for n in tasks:
+        p = Process(target=worker, args=(n,))
+        p.start()
+        processes.append(p)
+
+    # Wait for all child processes to finish
+    for p in processes:
+        print(f'Child process ID: {p.pid}')
+        p.join()
+
+    print(f'Parent process ID: {os.getpid()}')
+    print('All processes are done')
