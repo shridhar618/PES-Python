@@ -41,33 +41,48 @@
 #     print("After process has finished")
 
 
-from multiprocessing import Process, freeze_support
-import os
-import time
+# from multiprocessing import Process, freeze_support
+# import os
+# import time
 
-def child_activity():
-    print("Child activity started immediately",flush=True)
-    print(f'Child process ID: {os.getpid()}')
-    print(f'Parent process ID: {os.getppid()}')
-    time.sleep(3)
-    print('Exited from child process',flush=True)
+# def child_activity():
+#     print("Child activity started immediately",flush=True)
+#     print(f'Child process ID: {os.getpid()}')
+#     print(f'Parent process ID: {os.getppid()}')
+#     time.sleep(3)
+#     print('Exited from child process',flush=True)
     
     
-def main():
-    print('Parent starts immediately',flush=True)
-    print(f'Parent process ID: {os.getpid()}')
-    p=Process(target=child_activity)
-    p.start()
-    print(f'Parent created a child with PID: {p.pid}')
-    print(f'Is child alive after start: {p.is_alive()}')
-    p.join()
-    print(f'Is child alive after join: {p.is_alive()}')
-    print('Parent executed')
-    print("After process has finished",flush=True)
+# def main():
+#     print('Parent starts immediately',flush=True)
+#     print(f'Parent process ID: {os.getpid()}')
+#     p=Process(target=child_activity)
+#     p.start()
+#     print(f'Parent created a child with PID: {p.pid}')
+#     print(f'Is child alive after start: {p.is_alive()}')
+#     p.join()
+#     print(f'Is child alive after join: {p.is_alive()}')
+#     print('Parent executed')
+#     print("After process has finished",flush=True)
     
+    
+# if __name__ == "__main__":
+#     freeze_support()
+#     main()
+
+
+#program to show parellel processing
+from multiprocessing import Process
+import os
+
+def worker(name):
+    result=n*n
+    print(f'Process_id: {os.getpid()}, Parent_id: {os.getppid()}, Worker_name: {name}, Result: {result}')
     
 if __name__ == "__main__":
-    freeze_support()
-    main()
+    tasks=[1,2,3,4,5,6,7,8,9,10]
+    processes=[]
     
-    
+    p=Process(target=worker, args=('n,',))
+    p.start()
+    processes.append(p)
