@@ -136,16 +136,24 @@ if __name__ == "__main__":
         
     chunks = split_lines(lines, NUM_PROCESSES)
     processes = []
+    temp_files = []
     
-    for i in range(NUM_PROCESSES):
-        OUT_FILE = f'log_summary_{i}.txt'
-        p = Process(target=worker, args=(chunks[i], OUT_FILE))
+    for i,c in enumerate(chunks):
+        OUT_FILE = f'Part_i_{i}.txt'
+        temp_files.append(OUT_FILE)
+        p = Process(target=worker, args=(chunks, OUT_FILE))
         p.start()
         processes.append(p)
-        
+
     for p in processes:
         p.join()
         
-    print('Log analysis completed.')
-    
-    
+    final_counts = {level: 0 for level in LEVELS}
+    for temp_file in temp_files:
+        with open(temp_file, 'r') as f:
+            for line in f:
+                level, count = line.strip().split(': ')
+                final_counts[level] += int(count)
+        os.remove(temp_file)
+
+    print(f'Merged Files Counts: {final_counts}')
