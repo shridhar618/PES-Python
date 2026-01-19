@@ -112,43 +112,50 @@ LEVELS = ['INFO', 'WARNING', 'ERROR']
 
 def split_lines(lines, k):
     size = len(lines) // k
-    return [lines[i*size: (i+1)*size] for i in range(k)]    
+    return [lines[i * size: (i + 1) * size] for i in range(k)]
 
-def worker(chunk, OUT_FILE):
+
+def worker(chunk, out_file):
     counts = {level: 0 for level in LEVELS}
+
     for line in chunk:
         parts = line.split()
         if not parts:
             continue
+
         level = parts[0]
-        
         if level in counts:
             counts[level] += 1
-            
-    with open(OUT_FILE, 'w') as f:
+
+    with open(out_file, 'w') as f:
         for l in LEVELS:
             f.write(f'{l}: {counts[l]}\n')
-            
-            
+
+
 if __name__ == "__main__":
     with open(LOG_FILE, 'r') as f:
         lines = f.readlines()
-        
+
     chunks = split_lines(lines, NUM_PROCESSES)
     processes = []
     temp_files = []
-    
-    for i,c in enumerate(chunks):
-        OUT_FILE = f'Part_i_{i}.txt'
-        temp_files.append(OUT_FILE)
-        p = Process(target=worker, args=(chunks, OUT_FILE))
+
+    # Create processes
+    for i, chunk in enumerate(chunks):
+        out_file = f'Part_{i}.txt'
+        temp_files.append(out_file)
+
+        p = Process(target=worker, args=(chunk, out_file))
         p.start()
         processes.append(p)
 
+    # Wait for all processes
     for p in processes:
         p.join()
-        
+
+    # Merge results
     final_counts = {level: 0 for level in LEVELS}
+
     for temp_file in temp_files:
         with open(temp_file, 'r') as f:
             for line in f:
