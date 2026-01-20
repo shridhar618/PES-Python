@@ -17,7 +17,7 @@ async def main():
     results=await asyncio.gather(
         job('A', 2),
         job('B', 3),
-        job('C', 1)
+        job('C', 1),
         job('D', 4)
     )
     t1=time.time()
