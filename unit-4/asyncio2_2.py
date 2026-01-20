@@ -25,3 +25,5 @@ async def main():
     print("Individual job times:")
     for name, tt in results:
         print(f"Job {name} took {tt} seconds")
+        
+asyncio.run(main())
