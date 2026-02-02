@@ -1,6 +1,9 @@
-str="shridhar"
-def rev(str):
-    return str[::-1]
+def reverse_string(s):
+    rev = ""
+    for i in s:
+        rev = i + rev
+    return rev
 
-result=rev(str)
-print(result)
+text = input("Enter a string: ")
+result = reverse_string(text)
+print("Reversed string:", result)
