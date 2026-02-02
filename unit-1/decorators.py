@@ -7,9 +7,9 @@ def outer_func(func):
     return inner_func
 
 @outer_func
-def mult(num1,num2):
+def div(num1,num2):
     print(num1/num2)
-mult(2,3)
+div(2,3)
 
 #normal decorator
 
