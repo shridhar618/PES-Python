@@ -1,9 +1,9 @@
 def gcd(a,b):
     if b==0:
         return a
-    return gcd(a,b%a)
+    return gcd(b,a%b)
 
 a=10
-b=20¸
+b=2
 result=gcd(a,b)
 print(result)
