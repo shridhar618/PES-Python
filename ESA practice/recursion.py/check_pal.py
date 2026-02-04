@@ -4,3 +4,6 @@ def is_palindrome(s):
     if s[0] != s[-1]:    # Characters don't match
         return False
     return is_palindrome(s[1:-1])  # Recursive call
+
+s="madam"
+print(is_palindrome(s))
