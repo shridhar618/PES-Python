@@ -15,3 +15,4 @@ print(sum(i*i for i in range(int(input()), int(input())+1)))
 from functools import reduce
 m,n=int(input()),int(input())+1
 x=map(lambda i: i*i, range(m,n))
+print(x)
